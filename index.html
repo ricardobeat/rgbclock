@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!--[if lt IE 8]><html class="ie"><![endif]-->
+<!--[if !IE]>--><html><!--<![endif]-->
+<head>
+  <meta charset=utf-8 />
+  <title>RGB Clock</title>
+  
+  <!--[if IE]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href='http://fonts.googleapis.com/css?family=Arvo:bold' rel='stylesheet' type='text/css'>
+  
+  <style>
+    body { background-color:#888;
+      -webkit-transition:background-color 1s ease-in-out;
+      -moz-transition:background-color 1s ease-in-out;
+      -ms-transition:background-color 1s ease-in-out;
+      transition:background-color 1s ease-in-out;
+    }
+    body:after {
+      content:" ";
+      display:block;
+      position:absolute;
+      top:10px;
+      right:10px;
+      bottom:10px;
+      left:10px;
+      border:1px solid rgba(255,255,255,.4);
+    }
+    article, aside, figure, footer, header, hgroup, 
+    menu, nav, section { display: block; }
+    html, body { min-height:100%; overflow:hidden; }
+    time {
+      position:absolute;
+      width:100%;
+      height:120px;
+      margin:-70px auto 0;
+      line-height:100px;
+      top:50%;
+      font-size:120px;
+      font-family:Arvo, sans-serif;
+      font-weight:700;
+      text-shadow: -1px -1px 0 rgba(0,0,0,.5), 1px 1px 0 rgba(255,255,255,.4);
+      text-align:center;
+      color:rgba(250,250,250,.6);
+      display:none;
+    }
+    .ie time { color:#fafafa; }
+    time span {
+      display:inline-block;
+      width:74px;
+    }
+    time span:nth-child(3n){ color:rgba(255,255,255,.5); width:40px; }
+    h1 { position:absolute; left:-9999em; height:1px; }
+    footer {
+      font-family:arial, sans-serif;
+      font-size:12px;
+      position:absolute;
+      bottom:20px;
+      right:20px;
+    }
+    footer, a { color:rgba(255,255,255,.7); }
+    .ie footer, .ie a { color:#fafafa; }
+  </style>
+  
+</head>
+<body>
+  <h1>RGB Clock</h1>
+  <time id="clock">00:00:00</time>
+  <footer>an experiment by <a href="mailto:ricardo.tomasi@grifotecnologia.com.br">ricardo tomasi</a> / <a href="http://twitter.com/ricardobeat">@ricardobeat</a> - inspired by <a href="http://www.thecolourclock.co.uk/">The Colour Clock</a></footer>
+  
+  <script>
+  
+    var clock = document.getElementById('clock');
+
+    function pad(s,p){
+      if (s.toString().length < 2)
+        s = p+s;
+      return s.toString();
+    }
+
+    // fake a monospaced font :(
+    function mono(s){
+      return '<span>'+s.split('').join('</span><span>')+'</span>';
+    }
+
+    function update(){
+      var d = new Date(),
+          parts = [pad(d.getHours(),'0'), pad(d.getMinutes(),'0'), pad(d.getSeconds(),'0')],
+          color = '#';
+
+      clock.innerHTML = mono(parts.join(':'));
+
+      for(var i in parts)
+        color += pad(Math.floor( parts[i]*256/(i?75:30) ).toString(16), '0');
+
+      document.body.style.backgroundColor = color;
+    }
+
+    // start on exact second to avoid drift 
+    // (not sure it works...)
+    while ((+new Date()) % 1000);
+    update();
+    clock.style.display = 'block';
+    setInterval(update, 1000);
+  </script>
+  
+</body>
+</html>
