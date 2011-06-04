@@ -74,38 +74,41 @@
   
   <script>
   
-    var clock = document.getElementById('clock');
+    var clock = document.getElementById('clock')
 
     function pad(s,p){
-      if (s.toString().length < 2)
-        s = p+s;
-      return s.toString();
+      if (s.toString().length < 2){
+        s = p+s
+		}
+      return s.toString()
     }
 
     // fake a monospaced font :(
     function mono(s){
-      return '<span>'+s.split('').join('</span><span>')+'</span>';
+      return '<span>'+s.split('').join('</span><span>')+'</span>'
     }
 
     function update(){
-      var d = new Date(),
-          parts = [pad(d.getHours(),'0'), pad(d.getMinutes(),'0'), pad(d.getSeconds(),'0')],
-          color = '#';
+      var d = new Date()
+        , parts = [pad(d.getHours(),'0'), pad(d.getMinutes(),'0'), pad(d.getSeconds(),'0')]
+        , color = '#'
 
-      clock.innerHTML = mono(parts.join(':'));
+      clock.innerHTML = mono(parts.join(':'))
 
-      for(var i in parts)
-        color += pad(Math.floor( parts[i]*256/(i?75:30) ).toString(16), '0');
+      for(var i in parts){
+        color += pad(Math.floor( parts[i]*256/(i?75:30) ).toString(16), '0')
+      }
 
-      document.body.style.backgroundColor = color;
+      document.body.style.backgroundColor = color
     }
 
     // start on exact second to avoid drift 
     // (not sure it works...)
     while ((+new Date()) % 1000);
-    update();
-    clock.style.display = 'block';
-    setInterval(update, 1000);
+    update()
+    clock.style.display = 'block'
+    setInterval(update, 1000)
+
   </script>
   
 </body>
